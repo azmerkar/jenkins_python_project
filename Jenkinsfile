@@ -42,7 +42,9 @@ pipeline {
                     ssh -i $MY_SSH_KEY -o StrictHostKeyChecking=no ${username}@${SERVER_IP} 'hostname'                   
                     ssh -i \$MY_SSH_KEY -o StrictHostKeyChecking=no \${username}@\${SERVER_IP} <<EOF
                          
-                        echo "Uzak sunucuya bağlandınız: " 'hostname'
+                        echo "Uzak sunucuya bağlandınız: " 
+                        hostname
+                        $(hostname)
                         echo "Şu anki dizin:  " 
                         pwd
                         unzip -o /home/ec2-user/myapp.zip -d /home/ec2-user/app/
