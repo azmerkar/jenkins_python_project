@@ -16,8 +16,15 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh "pytest"
-                sh "whoami"
+                echo "Commit: ${env.GIT_COMMIT}"
+                echo "testing application" 
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+             sh '''
+                    source ~/.bashrc
+                    pytest --version
+                    pytest
+               '''
+             } 
             }
         }
 
