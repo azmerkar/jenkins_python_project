@@ -38,16 +38,15 @@ pipeline {
             steps {
               withCredentials([sshUserPrivateKey(credentialsId: 'ssh-key', keyFileVariable: 'MY_SSH_KEY', usernameVariable: 'username')]) {
                     sh """
-                    echo "Şu anki dizin: \$(pwd)"
                     scp -i \$MY_SSH_KEY -o StrictHostKeyChecking=no myapp.zip \${username}@\${SERVER_IP}:/home/ec2-user/
                     
                     ssh -i \$MY_SSH_KEY -o StrictHostKeyChecking=no \${username}@\${SERVER_IP} <<EOF
-                        echo "Uzak sunucuya bağlandınız: \$(hostname)"
-                        echo "Oluşturulan dizin: /home/ec2-user/app"
-                        mkdir -p /home/ec2-user/app
+                         
+                        echo "Uzak sunucuya bağlandınız: ${hostname}"
+                        echo "Şu anki dizin:  ${pwd}"
                         unzip -o /home/ec2-user/myapp.zip -d /home/ec2-user/app/
-                        echo "Dosyalar başarıyla yüklendi."
-                        cd /home/ec2-user/app/
+                        source app/venv/bin/activate
+                        cd /home/ec2-user/app/ 
                         pip install -r requirements.txt
                         sudo systemctl restart flaskapp.service
 EOF
