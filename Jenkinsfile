@@ -39,10 +39,10 @@ pipeline {
               withCredentials([sshUserPrivateKey(credentialsId: 'ssh-key', keyFileVariable: 'MY_SSH_KEY', usernameVariable: 'username')]) {
                     sh '''
                     scp -i \$MY_SSH_KEY -o StrictHostKeyChecking=no myapp.zip \${username}@\${SERVER_IP}:/home/ec2-user/
-                    ssh -i $MY_SSH_KEY -o StrictHostKeyChecking=no ${username}@${SERVER_IP} 'hostname'                   
+                    ssh -i $MY_SSH_KEY -o StrictHostKeyChecking=no ${username}@${SERVER_IP} 'hostname'  
+                    ssh -i $MY_SSH_KEY -o StrictHostKeyChecking=no ${username}@${SERVER_IP} "echo Uzak sunucuya bağlandınız: \$(hostname)"                 
                     ssh -i \$MY_SSH_KEY -o StrictHostKeyChecking=no \${username}@\${SERVER_IP} <<EOF
-                         
-                        echo "Uzak sunucuya bağlandınız: \$(hostname)" 
+                      
                         hostname
                         echo "Şu anki dizin:  " 
                         pwd
