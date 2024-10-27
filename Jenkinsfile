@@ -38,6 +38,7 @@ pipeline {
             steps {
               withCredentials([sshUserPrivateKey(credentialsId: 'ssh-key', keyFileVariable: 'MY_SSH_KEY', usernameVariable: 'username')]) {
                 sh """
+                pwd
                 scp -i $MY_SSH_KEY -o StrictHostKeyChecking=no myapp.zip ${username}@${SERVER_IP}:/home/ec2-user/
                 scp -i $MY_SSH_KEY -o StrictHostKeyChecking=no start.sh  ${username}@${SERVER_IP}:/home/ec2-user/
                 ssh -i $MY_SSH_KEY -o StrictHostKeyChecking=no ${username}@${SERVER_IP} && \
