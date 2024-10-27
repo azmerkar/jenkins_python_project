@@ -33,9 +33,8 @@ pipeline {
 
              } 
         } 
-    }
 
-            stage('Deploy to Prod') {
+        stage('Deploy to Prod') {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'ssh-key', keyFileVariable: 'MY_SSH_KEY' ,usernameVariable: 'username' )]){
                     sh '''
@@ -53,4 +52,8 @@ pipeline {
      
              } 
         } 
+
+    }
+
+
     }
