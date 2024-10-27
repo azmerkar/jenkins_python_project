@@ -1,0 +1,5 @@
+[
+  "test_app.py::test_add_task",
+  "test_app.py::test_delete_task",
+  "test_app.py::test_index"
+]
