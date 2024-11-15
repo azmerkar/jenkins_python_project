@@ -1,0 +1,29 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: npm-real-world
+spec:
+  workspaces:
+    - name: mehmet
+  params:
+    - name: pathContext
+      description: Path to application inside git
+      default: "."
+      type: string
+    - name: action
+      description: Operation to be performed by npm
+      default: "start"
+      type: string
+  steps:
+    - name: npm-install
+      image: node:14
+      workingDir: "$(workspaces.mehmet.path)"
+      command:
+        - /bin/bash
+      args: ['-c', 'pwd && ls -al && cd $(workspaces.mehmet.path)/$(params.pathContext) && npm install']
+    - name: npm-lint
+      image: node:14
+      workingDir: "$(workspaces.mehmet.path)"
+      command:
+        - /bin/bash
+      args: ['-c', 'cd $(workspaces.mehmet.path)/$(params.pathContext) && npm $(params.action)']

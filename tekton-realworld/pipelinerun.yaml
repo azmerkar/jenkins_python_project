@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: real-word-push-run
+spec:
+  pipelineRef:
+    name: real-word-push
+  podTemplate:
+    securityContext:
+      fsGroup: 65532
+  params:
+  - name: pathContext
+    value: app
+  - name: action
+    value: run lint
+  - name: repo-url
+    value: https://github.com/azmerkar/jenkins_python_project.git #https://github.com/google/docsy-example.git  ##https://github.com/azmerkar/docsy-example.git
+  - name: user 
+    value: mekar43  
+  - name: pass  
+    value: Hm150712.
+  - name: image-name  
+    value: tekton-python
+  workspaces:
+  - name: shared-data
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi

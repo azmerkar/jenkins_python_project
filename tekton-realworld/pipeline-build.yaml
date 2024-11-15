@@ -1,0 +1,78 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: real-word-push
+spec:
+  workspaces:
+    - name: shared-data
+  params:
+    - name: pathContext
+      type: string
+    - name: repo-url
+      type: string
+      description: The git repo URL to clone from 
+    - name: action
+      type: string 
+    - name: user 
+      type: string  
+    - name: pass  
+      type: string
+    - name: image-name  
+      type: string
+    - name: registry   
+      type: string
+      default: "docker.io"
+  tasks:
+    - name: fetch-source
+      taskRef:
+        name: git-clone
+      params: 
+      - name: url
+        value: $(params.repo-url) 
+      workspaces:
+        - name: output 
+          workspace: shared-data
+  
+    # - name: lint
+    #   runAfter:
+    #     - fetch-source  
+    #   taskRef:
+    #     name: npm-real-world            
+    #   params:
+    #     - name: pathContext
+    #       value: app
+    #     - name: action
+    #       value: run lint
+    #   workspaces:
+    #     - name: mehmet  
+    #       workspace: shared-data
+ 
+    # - name: test
+    #   runAfter:
+    #     - lint 
+    #   taskRef:
+    #     name: npm-real-world       
+    #   params:
+    #     - name: pathContext
+    #       value: app
+    #     - name: action
+    #       value: run test 
+    #   workspaces:
+    #     - name: mehmet  
+    #       workspace: shared-data
+
+    - name: build-and-deploy       
+      runAfter:
+        - fetch-source 
+      taskRef:
+        name: s2i-nodejs
+      params: 
+      - name: user 
+        value: "$(params.user)"  
+      - name: pass  
+        value: "$(params.pass)"
+      - name: image-name  
+        value: "$(params.image-name)"     
+      workspaces:
+        - name: mehmet  
+          workspace: shared-data

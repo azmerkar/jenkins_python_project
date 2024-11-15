@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-app-deployment
+  labels:
+    app: python-app
+spec:
+  replicas: 2 # Pod sayısını ihtiyacınıza göre ayarlayın
+  selector:
+    matchLabels:
+      app: python-app
+  template:
+    metadata:
+      labels:
+        app: python-app
+    spec:
+      containers:
+        - name: python-app-container
+          image: mekar43/tekton-python:latest # Docker Hub üzerindeki imaj adı
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000 # Dockerfile'da belirtilen EXPOSE portu
+          env:
+            - name: ENV
+              value: "production" # Ortam değişkeni (isteğe bağlı)
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-app-service
+spec:
+  selector:
+    app: python-app
+  ports:
+    - protocol: TCP
+      port: 80 # Servisin dışarı açacağı port
+      targetPort: 5000 # Container içinde dinlenen port
+  type: NodePort # Servis tipi (isteğe bağlı: ClusterIP veya LoadBalancer)
