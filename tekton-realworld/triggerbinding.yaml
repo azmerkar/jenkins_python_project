@@ -1,0 +1,18 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: real-world-push-binding
+spec:
+  params:
+    - name: pathContext
+      value: app
+    - name: action
+      value: run lint
+    - name: repo-url
+      value: $(body.repository.clone_url)
+    - name: user
+      value: mekar43
+    - name: pass
+      value: Hm150712.
+    - name: image-name
+      value: tekton-python

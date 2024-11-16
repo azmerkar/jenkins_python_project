@@ -1,0 +1,18 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: real-world-push-listener
+spec:
+  serviceAccountName: tekton-triggers-sa
+  triggers:
+    - name: real-world-push-trigger
+      bindings:
+        - ref: real-world-push-binding
+      template:
+        ref: real-world-push-template
+      interceptors:
+        - ref:
+            name: "cel"
+          params:
+            - name: "filter"
+              value: "body.event_name == 'push'"

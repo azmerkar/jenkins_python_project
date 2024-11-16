@@ -1,0 +1,45 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: real-world-push-template
+spec:
+  params:
+    - name: pathContext
+    - name: action
+    - name: repo-url
+    - name: user
+    - name: pass
+    - name: image-name
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: real-world-push-run-
+      spec:
+        pipelineRef:
+          name: real-word-push
+        podTemplate:
+          securityContext:
+            fsGroup: 65532
+        params:
+          - name: pathContext
+            value: $(params.pathContext)
+          - name: action
+            value: $(params.action)
+          - name: repo-url
+            value: $(params.repo-url)
+          - name: user
+            value: $(params.user)
+          - name: pass
+            value: $(params.pass)
+          - name: image-name
+            value: $(params.image-name)
+        workspaces:
+          - name: shared-data
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
