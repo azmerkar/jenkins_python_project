@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: geocentric-model-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/azmerkar/jenkins_python_project.git
+    targetRevision: HEAD
+    path: ./argocd_declarative/manifests/geometric_model
+   
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: geocentric-model
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true  
+    automated:
+      prune: true
+      selfHeal: true
