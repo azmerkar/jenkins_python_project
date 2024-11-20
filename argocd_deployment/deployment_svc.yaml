@@ -30,4 +30,17 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-app-service
+spec:
+  selector:
+    app: python-app
+  ports:
+    - protocol: TCP
+      port: 80 # Servisin dışarı açacağı port
+      targetPort: 5000 # Container içinde dinlenen port
+  type: NodePort # Servis tipi (isteğe bağlı: ClusterIP veya LoadBalancer)
 
