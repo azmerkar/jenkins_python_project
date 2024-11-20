@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: http://165.22.209.118:3000/siddharth/gitops-argocd.git
+    repoURL: https://github.com/azmerkar/jenkins_python_project.git
     targetRevision: HEAD
-    path: ./declarative/app-of-apps
+    path: ./argocd_declarative_multiapp/app_of_apps
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
