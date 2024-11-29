@@ -32,34 +32,6 @@ spec:
       workspaces:
         - name: output 
           workspace: shared-data
-  
-    # - name: lint
-    #   runAfter:
-    #     - fetch-source  
-    #   taskRef:
-    #     name: npm-real-world            
-    #   params:
-    #     - name: pathContext
-    #       value: app
-    #     - name: action
-    #       value: run lint
-    #   workspaces:
-    #     - name: mehmet  
-    #       workspace: shared-data
- 
-    # - name: test
-    #   runAfter:
-    #     - lint 
-    #   taskRef:
-    #     name: npm-real-world       
-    #   params:
-    #     - name: pathContext
-    #       value: app
-    #     - name: action
-    #       value: run test 
-    #   workspaces:
-    #     - name: mehmet  
-    #       workspace: shared-data
 
     - name: build-and-deploy       
       runAfter:
