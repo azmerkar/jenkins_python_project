@@ -3,4 +3,4 @@ kind: Kustomization
 metadata:
   name: argocd
 resources:
-- ../argocd_declarative_multiapp/app_of_app.yaml
+  - ../argocd_declarative_multiapp/
